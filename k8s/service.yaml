@@ -1,0 +1,21 @@
+# k8s/service.yaml
+# Tells Kubernetes HOW to expose your pods to traffic
+# Pods are temporary — Services give them a stable address
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: flask-app-service
+spec:
+  selector:
+    app: flask-app      # Routes traffic to any pod with this label
+
+  # NodePort: exposes the service on a port of each node (good for local Minikube testing)
+  # Change to LoadBalancer when deploying to AWS/GCP/Azure — they auto-provision a real LB
+  type: NodePort
+
+  ports:
+    - protocol: TCP
+      port: 80            # Port the Service listens on (inside the cluster)
+      targetPort: 5000    # Port the Flask container listens on
+      nodePort: 30080     # Port exposed on the host machine (access at localhost:30080)
