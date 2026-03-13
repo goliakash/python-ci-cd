@@ -5,6 +5,9 @@ pipeline {
 
     // Run on any available Jenkins agent
     agent any
+     options {
+        skipDefaultCheckout(false)
+    }
 
     // --- Pipeline-wide variables ---
     environment {
@@ -20,6 +23,7 @@ pipeline {
         stage('Checkout') {
             steps {
                 checkout scm
+                sh 'pwd && ls -la'
             }
         }
 
@@ -30,7 +34,7 @@ pipeline {
                     python3 -m venv venv
                     . venv/bin/activate
                     pip install --no-cache-dir -r requirements.txt
-                    pytest tests/ -v
+                    pytest tests/pytest.py -v
                 '''
             }
         }
